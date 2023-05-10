@@ -33,8 +33,8 @@ if __name__ == '__main__':
 
 
     goal = (10,20)
-    solver = AStar(grid, player, goal)
-    #solver = Dijkstra(grid, player, goal)
+    #solver = AStar(grid, player, goal)
+    solver = Dijkstra(grid, player, goal)
     #solver = DFS(grid, player, goal)
 
     pprint(f'Empty path: {grid.path}')
@@ -55,6 +55,8 @@ if __name__ == '__main__':
         if path is not None:
             grid.path = path
             explored = explored - set(path)
+
+            player.move_along_path(path)
 
         # Store the explored cells
         grid.explored = explored

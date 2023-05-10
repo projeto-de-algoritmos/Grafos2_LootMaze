@@ -78,9 +78,9 @@ class Grid:
                 )
 
                 if (x, y) in self.path:
-                    cell_color = (255, 128, 128)
+                    cell_color = (255, 128, 128) # Pink
                 elif (x, y) in self.explored:
-                    cell_color = (0, 0, 255)
+                    cell_color = (0, 0, 255) # Blue
                 else:
                     cell_color = self.CELL_TYPE[self.grid[y][x]]['color']
 

@@ -1,10 +1,11 @@
 import pygame
-
+from pprint import pprint
 
 class Player:
 
     def __init__(self, grid):
         self.grid = grid
+        self.path = []
         self.position = (0, 0)
         self.color = (0, 255, 0)
         self.size = (grid.CELL_SIZE, grid.CELL_SIZE)
@@ -26,3 +27,9 @@ class Player:
             width=0,
             border_radius=0
         )
+    
+    def move_along_path(self, path):
+        if not self.path:
+            self.path = path
+        
+        self.position = self.path.pop(0)
