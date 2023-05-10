@@ -3,6 +3,29 @@ import pygame
 import sys
 import random
 
+class Player:
+
+    def __init__(self, grid):
+        self.grid = grid
+        self.position = [0, 0]
+        self.color = (0, 255, 0)
+        self.size = (grid.CELL_SIZE, grid.CELL_SIZE)
+
+    def draw(self, screen):
+        rect = pygame.Rect(
+            self.grid.GRID_POSITION[0] + (self.position[0] * self.grid.CELL_SIZE),
+            self.grid.GRID_POSITION[1] + (self.position[1] * self.grid.CELL_SIZE),
+            self.size[0],
+            self.size[1]
+        )
+        pygame.draw.rect(
+            surface=screen,
+            color=self.color,
+            rect=rect,
+            width=0,
+            border_radius=0
+        )
+
 
 class Grid:
 
@@ -71,6 +94,7 @@ if __name__ == '__main__':
     grid = Grid(24, 32)
     from pprint import pprint; pprint(grid.grid)
 
+    player = Player(grid)
 
     # Game loop
     while True:
@@ -85,6 +109,9 @@ if __name__ == '__main__':
 
         # Draw the grid
         grid.draw_grid(window)
+
+        # Draw the player
+        player.draw(window)
 
         # Update the display
         pygame.display.flip()
