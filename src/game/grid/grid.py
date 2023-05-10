@@ -47,6 +47,14 @@ class Grid:
         self.width = len(self.grid[0])
         self.height = len(self.grid)
 
+        self.goal = (None, None)
+
+    def pixel_to_cell(self, pixel):
+        return (
+            (pixel[0] - self.GRID_POSITION[0]) // self.CELL_SIZE,
+            (pixel[1] - self.GRID_POSITION[1]) // self.CELL_SIZE
+        )
+        
     def pixel_to_cell_type(self, color):
         print(color)
         return self.COLOR_TO_CELL_TYPE.get(tuple(color), 0)  # Convert color to tuple
@@ -81,6 +89,8 @@ class Grid:
                     cell_color = (255, 128, 128) # Pink
                 elif (x, y) in self.explored:
                     cell_color = (0, 0, 255) # Blue
+                elif (x, y) == self.goal:
+                    cell_color = (255, 128, 0) # Orange
                 else:
                     cell_color = self.CELL_TYPE[self.grid[y][x]]['color']
 
