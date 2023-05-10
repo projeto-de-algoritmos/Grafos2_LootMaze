@@ -8,6 +8,7 @@ from src.game.grid.grid import Grid
 from src.game.player.player import Player
 from src.game.path_algorithm.a_star import AStar
 from src.game.path_algorithm.dijkstra import Dijkstra
+from src.game.path_algorithm.DFS import DFS
 
 
 if __name__ == '__main__':
@@ -33,9 +34,10 @@ if __name__ == '__main__':
 
     goal = (10,20)
     # solver = AStar(grid, player, goal)
-    solver = Dijkstra(grid, player, goal)
+    # solver = Dijkstra(grid, player, goal)
+    solver = DFS(grid, player, goal)
 
-    pprint(grid.path)
+    pprint(f'Empty path: {grid.path}')
 
     # Game loop
     while True:
@@ -51,11 +53,9 @@ if __name__ == '__main__':
 
         # If a path was found, store it
         if path is not None:
-            print(path)
+            print(f'Path: {path}')
             grid.path = path
             explored = explored - set(path)
-        else:
-            print('Impossible path')
 
         # Store the explored cells
         grid.explored = explored
