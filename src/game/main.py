@@ -23,7 +23,7 @@ if __name__ == '__main__':
     clock.tick(24)
 
     # Create the grid
-    grid = Grid(24, 32)
+    grid = Grid('map.png')
     from pprint import pprint
     # pprint(grid.grid)
 
@@ -33,9 +33,9 @@ if __name__ == '__main__':
 
 
     goal = (10,20)
-    # solver = AStar(grid, player, goal)
-    # solver = Dijkstra(grid, player, goal)
-    solver = DFS(grid, player, goal)
+    solver = AStar(grid, player, goal)
+    #solver = Dijkstra(grid, player, goal)
+    #solver = DFS(grid, player, goal)
 
     pprint(f'Empty path: {grid.path}')
 
@@ -53,7 +53,6 @@ if __name__ == '__main__':
 
         # If a path was found, store it
         if path is not None:
-            print(f'Path: {path}')
             grid.path = path
             explored = explored - set(path)
 
