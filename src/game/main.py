@@ -60,7 +60,7 @@ if __name__ == '__main__':
         # Store the explored cells
         grid.explored = explored
 
-        # Fill the window with red
+        # Fill the window with black
         window.fill((0, 0, 0))
 
         # Draw the grid
