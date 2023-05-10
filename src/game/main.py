@@ -6,7 +6,7 @@ import random
 
 class Grid:
 
-    cell_size = 20
+    CELL_SIZE = 10
 
     CELL_TYPE = {
         0: {
@@ -20,6 +20,8 @@ class Grid:
             'walkable': False
         }
     }
+
+    GRID_POSITION = (CELL_SIZE  * 2, CELL_SIZE * 2)
     
 
     def __init__(self, width, height):
@@ -39,10 +41,10 @@ class Grid:
         for y in range(self.height):
             for x in range(self.width):
                 rect = pygame.Rect(
-                    x * self.cell_size,
-                    y * self.cell_size,
-                    self.cell_size, 
-                    self.cell_size
+                    self.GRID_POSITION[0] + (x * self.CELL_SIZE),
+                    self.GRID_POSITION[1] + (y * self.CELL_SIZE),
+                    self.CELL_SIZE, 
+                    self.CELL_SIZE
                 )
                 cell_color = self.CELL_TYPE[self.grid[y][x]]['color']
                 pygame.draw.rect(
@@ -61,6 +63,11 @@ if __name__ == '__main__':
     # Set up the game window
     window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
+    # Limit the frame rate
+    clock = pygame.time.Clock()
+    clock.tick(24)
+
+    # Create the grid
     grid = Grid(24, 32)
     from pprint import pprint; pprint(grid.grid)
 
