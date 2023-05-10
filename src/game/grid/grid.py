@@ -113,7 +113,7 @@ class Grid:
                 # Scale tile image
                 self.tile_images[self.grid[y][x]] = pygame.transform.scale(
                     self.tile_images[self.grid[y][x]],
-                    (self.CELL_SIZE * 4, self.CELL_SIZE * 4)
+                    (self.CELL_SIZE * 4, self.CELL_SIZE * 5)
                 )
 
                 screen.blit(
