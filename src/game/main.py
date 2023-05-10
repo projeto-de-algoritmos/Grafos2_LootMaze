@@ -2,7 +2,7 @@ from src.config import WINDOW_WIDTH, WINDOW_HEIGHT
 import pygame
 import sys
 import random
-
+from time import sleep
 
 
 class Player:
@@ -100,7 +100,7 @@ class Grid:
         },
         1: {
             'name': 'wall',
-            'color': (255, 0, 0),
+            'color': (10, 0, 0),
             'walkable': False,
             'cost': 0
         },
@@ -143,8 +143,8 @@ class Grid:
                 )
 
                 if (x, y) in self.path:
-                    cell_color = (128, 128, 128)
-                if (x, y) in self.explored:
+                    cell_color = (255, 128, 128)
+                elif (x, y) in self.explored:
                     cell_color = (0, 0, 255)
                 else:
                     cell_color = self.CELL_TYPE[self.grid[y][x]]['color']
@@ -194,10 +194,13 @@ if __name__ == '__main__':
 
         # Perform a step of the A* algorithm
         path, explored = solver.a_star_tick()
+        sleep(0.1)
 
         # If a path was found, store it
         if path is not None:
+            print(path)
             grid.path = path
+            explored = explored - set(path)
         else:
             print('Impossible path')
 
