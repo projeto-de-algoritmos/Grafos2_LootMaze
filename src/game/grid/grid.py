@@ -1,6 +1,9 @@
+import os
 import random
 
 import pygame
+
+from src.config import ASSETS_DIR
 
 
 class Grid:
@@ -10,24 +13,27 @@ class Grid:
     CELL_TYPE = {
         0: {
             'name': 'floor',
-            'color': (255, 255, 255),
+            'color': (255, 255, 255, 255),
             'walkable': True,
             'cost': 1
         },
         1: {
             'name': 'wall',
-            'color': (10, 0, 0),
+            'color': (0, 0, 0, 255),
             'walkable': False,
             'cost': 0
         },
         2: {
             'name': 'lava',
-            'color': (255, 255, 0),
+            'color': (255, 255, 0, 255),
             'walkable': True,
             'cost': 10
         }
 
     }
+
+    # Map color to cell type
+    COLOR_TO_CELL_TYPE = {v['color']: k for k, v in CELL_TYPE.items()}
 
     GRID_POSITION = (CELL_SIZE  * 2, CELL_SIZE * 2)
 
@@ -35,12 +41,25 @@ class Grid:
 
     explored = []
 
-    def __init__(self, width, height):
-        self.width = width
-        self.height = height
-        self.grid = [[0 for _ in range(width)] for _ in range(height)]
-        self.create_walls()
-        
+    def __init__(self, filename):
+        self.grid = self.load_from_file(filename)
+        # self.grid = [[0 for _ in range(width)] for _ in range(height)]
+        self.width = len(self.grid[0])
+        self.height = len(self.grid)
+
+    def pixel_to_cell_type(self, color):
+        print(color)
+        return self.COLOR_TO_CELL_TYPE.get(tuple(color), 0)  # Convert color to tuple
+
+    def load_from_file(self, filename):
+        image = pygame.image.load(os.path.join(ASSETS_DIR, filename))
+        print(self.COLOR_TO_CELL_TYPE)
+        return [
+            [
+                self.pixel_to_cell_type(image.get_at((x, y))) for x in range(image.get_width())
+            ] for y in range(image.get_height())
+        ]
+
     def create_walls(self):
         # create random walls assigning 1 to random cells on the grid
         for y in range(self.height):
