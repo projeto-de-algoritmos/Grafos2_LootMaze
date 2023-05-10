@@ -1,4 +1,4 @@
-class AStar:
+class Dijkstra:
     def __init__(self, grid, start, goal):
         self.grid = grid
         self.start = start
@@ -7,12 +7,7 @@ class AStar:
         self.open_set = {start}
         self.came_from = {start: None}
         self.g_score = {start: 0}
-        self.f_score = {start: self.heuristic(start, goal)}
         self.explored = set()
-
-    def heuristic(self, cell, goal):
-        # Manhattan distance
-        return abs(cell[0] - goal[0]) + abs(cell[1] - goal[1])
 
     def get_neighbors(self, cell):
         # Returns walkable neighbors
@@ -28,7 +23,7 @@ class AStar:
         if not self.open_set:
             return None, self.explored  # No path found
 
-        current = min(self.open_set, key=lambda cell: self.f_score[cell])
+        current = min(self.open_set, key=lambda cell: self.g_score[cell])  # Here we only consider g_score
         self.explored.add(current)  # add current cell to explored set
 
         if current == self.goal:
@@ -46,9 +41,7 @@ class AStar:
             if neighbor not in self.g_score or tentative_g_score < self.g_score[neighbor]:
                 self.came_from[neighbor] = current
                 self.g_score[neighbor] = tentative_g_score
-                self.f_score[neighbor] = tentative_g_score + self.heuristic(neighbor, self.goal)
                 if neighbor not in self.open_set:
                     self.open_set.add(neighbor)
 
         return None, self.explored  # Path not yet found
-

@@ -7,6 +7,7 @@ from time import sleep
 from src.game.grid.grid import Grid
 from src.game.player.player import Player
 from src.game.path_algorithm.a_star import AStar
+from src.game.path_algorithm.dijkstra import Dijkstra
 
 
 if __name__ == '__main__':
@@ -31,7 +32,8 @@ if __name__ == '__main__':
 
 
     goal = (10,20)
-    solver = AStar(grid, player, goal)
+    # solver = AStar(grid, player, goal)
+    solver = Dijkstra(grid, player, goal)
 
     pprint(grid.path)
 
@@ -43,8 +45,8 @@ if __name__ == '__main__':
                 pygame.quit()
                 sys.exit()
 
-        # Perform a step of the A* algorithm
-        path, explored = solver.a_star_tick()
+        # Perform a step of the pathfinder algorithm
+        path, explored = solver.algorithm_tick()
         sleep(0.1)
 
         # If a path was found, store it
