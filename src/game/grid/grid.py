@@ -42,6 +42,8 @@ class Grid:
 
     path = []
 
+    goal = ()
+
     explored = []
 
     def __init__(self, filename):

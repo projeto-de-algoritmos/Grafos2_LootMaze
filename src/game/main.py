@@ -63,7 +63,6 @@ if __name__ == '__main__':
         if solver.goal:
             # Perform a step of the pathfinder algorithm
             path, explored = solver.algorithm_tick()
-            sleep(0.1)
 
             # If a path was found, store it
             if path is not None:
