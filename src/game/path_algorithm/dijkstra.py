@@ -28,7 +28,7 @@ class Dijkstra:
 
         if current == self.goal:
             path = []
-            while current is not None:
+            while current is not None and current != self.start:
                 path.append(current)
                 current = self.came_from[current]
             path.reverse()
