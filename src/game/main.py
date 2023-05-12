@@ -27,10 +27,8 @@ if __name__ == '__main__':
     from pprint import pprint
     # pprint(grid.grid)
 
-
     # Create the player
     player = Player(grid)
-
 
     goal = None
     #solver = AStar(grid, player, goal)
@@ -68,10 +66,12 @@ if __name__ == '__main__':
             if path is not None:
                 grid.path = path
                 explored = explored - set(path)
-                player.move_along_path(path)
+                player.acknoledge_path(path)
 
             # Store the explored cells
             grid.explored = explored
+
+        player.execute_action()
 
         # Fill the window with black
         window.fill((0, 0, 0))

@@ -28,8 +28,13 @@ class Player:
             border_radius=0
         )
     
-    def move_along_path(self, path):
+    def acknoledge_path(self, path):
         if not self.path:
             self.path = path
-        
-        self.position = self.path.pop(0)
+
+    def execute_action(self):
+        try:
+            self.position = self.path.pop(0)
+
+        except IndexError:
+            pass
