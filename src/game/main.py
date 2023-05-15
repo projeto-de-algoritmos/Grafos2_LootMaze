@@ -10,6 +10,9 @@ from src.game.path_algorithm.a_star import AStar
 from src.game.path_algorithm.dijkstra import Dijkstra
 from src.game.path_algorithm.DFS import DFS
 
+from src.game.game_scene import GameScene
+from src.game.menu import Menu
+
 
 def handle_mouse_click():
     global goal, grid
@@ -22,73 +25,25 @@ def handle_mouse_click():
         solver.goal = goal
         print(f"Goal: {goal}")
 
-
-if __name__ == "__main__":
+def main():
     # Initialize Pygame
     pygame.init()
 
     # Set up the game window
     window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
-    # Limit the frame rate
-    clock = pygame.time.Clock()
-
-    # Create the grid
-    grid = Grid("map_3.png")
-    from pprint import pprint
-
-    # pprint(grid.grid)
-
-    # Create the player
-    player = Player(grid)
-
-    solver = AStar(grid)
-    # solver = Dijkstra(grid)
-    # solver = DFS(grid)
-
-    pprint(f"Empty path: {grid.path}")
-
-    # Game loop
     while True:
-        
-        clock.tick(360/((len(grid.path)/2) + 1))
-        
+        menu = Menu(window)
 
-        # Event handling
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
+        game_scene = GameScene(window)
 
-        # Player has no goal
-        # if not solver.goal and not grid.path:
-        # Player clicks on goal pixel
-        # handle_mouse_click()
+        running, game_running = menu.run()
 
-        # Player has a goal
-        if solver.goal:
-            # Perform a step of the pathfinder algorithm
-            path, explored = solver.algorithm_tick()
+        if not running and not game_running:
+                return
 
-            # If a path was found, store it
-            if path is not None:
-                grid.path = path
-                explored = explored - set(path)
-                player.acknoledge_path(path)
+        game_scene.run()
 
-            # Store the explored cells
-            grid.explored = explored
 
-        player.execute_action()
-
-        # Fill the window with black
-        window.fill((0, 0, 0))
-
-        # Draw the grid
-        grid.draw_grid(window)
-
-        # Draw the player
-        player.draw(window)
-
-        # Update the display
-        pygame.display.flip()
+if __name__ == "__main__":
+    main()
