@@ -54,12 +54,12 @@ class GameScene:
             )
             pygame.draw.line(screen, color, (0, y), (screen.get_width(), y))
 
-    def run(self):
+    def run(self, map_file):
         # Limit the frame rate
         clock = pygame.time.Clock()
 
         # Create the grid
-        grid = Grid("map_2.png")
+        grid = Grid(map_file)
 
         # Create the player
         player = Player(grid)

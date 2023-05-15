@@ -3,6 +3,7 @@ import pygame
 import sys
 import random
 from time import sleep
+import argparse
 
 from src.game.grid.grid import Grid
 from src.game.player.player import Player
@@ -26,6 +27,10 @@ def handle_mouse_click():
         print(f"Goal: {goal}")
 
 def main():
+    parser = argparse.ArgumentParser(description="Grid game")
+    parser.add_argument("map_file", help="Path to the map file")
+    args = parser.parse_args()
+
     # Initialize Pygame
     pygame.init()
 
@@ -42,7 +47,7 @@ def main():
         if not running and not game_running:
                 return
 
-        game_scene.run()
+        game_scene.run(map_file=args.map_file)
 
 
 if __name__ == "__main__":
