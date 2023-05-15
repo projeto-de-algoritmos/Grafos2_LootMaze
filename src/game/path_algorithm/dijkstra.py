@@ -1,5 +1,6 @@
 class Dijkstra:
     def __init__(self, grid):
+        self.name = "Dijkstra"
         self.grid = grid
         self.spawn = self.grid.spawn
         self.goal = self.grid.goal

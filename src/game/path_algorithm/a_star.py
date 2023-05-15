@@ -1,5 +1,6 @@
 class AStar:
     def __init__(self, grid):
+        self.name = "A*"  # Name of the algorithm
         self.grid = grid
         self.spawn = self.grid.spawn
         self.goal = self.grid.goal

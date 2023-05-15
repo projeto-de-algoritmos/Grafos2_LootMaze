@@ -1,5 +1,6 @@
 class DFS:
     def __init__(self, grid):
+        self.name = "DFS"
         self.grid = grid
         self.start = self.grid.spawn
         self.goal = self.grid.goal
