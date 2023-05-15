@@ -9,6 +9,11 @@ class DFS:
         self.came_from = {self.start: None}
         self.explored = set()
 
+    def reset(self):
+        self.stack = [self.start]
+        self.came_from = {self.start: None}
+        self.explored = set()
+
     def get_neighbors(self, cell):
         # Returns walkable neighbors
         neighbors = []

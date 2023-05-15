@@ -25,6 +25,9 @@ class Player:
 
     def __getitem__(self, item):
         return self.position[item]
+    
+    def reset(self):
+        self.position = self.grid.spawn
 
     def draw(self, screen):
         rect = pygame.Rect(

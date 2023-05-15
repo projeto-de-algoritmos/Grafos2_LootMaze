@@ -9,6 +9,12 @@ class Dijkstra:
         self.came_from = {self.spawn: None}
         self.g_score = {self.spawn: 0}
         self.explored = set()
+    
+    def reset(self):
+        self.open_set = {self.spawn}
+        self.came_from = {self.spawn: None}
+        self.g_score = {self.spawn: 0}
+        self.explored = set()
 
     def get_neighbors(self, cell):
         # Returns walkable neighbors

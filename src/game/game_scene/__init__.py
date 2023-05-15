@@ -20,31 +20,36 @@ class GameScene:
 
         self.steps_counter_text = "passos: "
         self.lesser_path = "menor caminho: "
-        self.steps_counter = 0
-        self.lesser_path_counter = 0
+
+        # table -> [solver_name, steps, lesser_path]
+        self.table_data = [
+            ["A*", 0, 0],
+            ["Dijkstra", 0, 0],
+            ["DFS", 0, 0]
+        ]
 
     def draw_back_button(self):
         pygame.draw.rect(self.screen, (255, 0, 0), self.back_button)
         # You should replace this with your actual drawing code, especially if you want a more styled button
-
-    def draw_solver_name(self, solver):
-        # Draw the steps counter on the top right corner
-        solver_name_text = self.font.render(solver.name, True, (255, 0, 0))
-        solver_name_text_rect = solver_name_text.get_rect(center=(WINDOW_WIDTH - 100, 20))
-        self.screen.blit(solver_name_text, solver_name_text_rect)
     
-    def draw_steps_counter(self, counter):
-        # Draw the steps counter on the top right corner
-        steps_counter_text = self.font.render(self.steps_counter_text + str(counter), True, (255, 0, 0))
-        steps_counter_text_rect = steps_counter_text.get_rect(center=(WINDOW_WIDTH - 100, 50))
-        self.screen.blit(steps_counter_text, steps_counter_text_rect)
-    
-    def draw_lesser_path(self, lesser_path):
-        # Draw the steps counter on the top right corner
-        lesser_path_text = self.font.render(self.lesser_path + str(lesser_path), True, (255, 0, 0))
-        lesser_path_text_rect = lesser_path_text.get_rect(center=(WINDOW_WIDTH - 140, 80))
-        self.screen.blit(lesser_path_text, lesser_path_text_rect)
+    def draw_table(self, table_data):
+        # Títulos das colunas
+        column_titles = ["", "Steps", "Path"]
         
+        # Desenhar os contadores de etapas no canto superior direito
+        for i in range(len(table_data)):
+            for j in range(len(table_data[i])):
+                # Desenhar os dados da tabela
+                text = self.font.render(str(table_data[i][j]), True, (255, 0, 0))
+                text_rect = text.get_rect(center=(WINDOW_WIDTH - 100 + (j * 100) - 300, 150 + (i * 30) - 100))
+                self.screen.blit(text, text_rect)
+                
+                # Desenhar os títulos das colunas
+                if i == 0:
+                    title_text = self.font.render(column_titles[j], True, (255, 0, 0))
+                    title_rect = title_text.get_rect(center=(WINDOW_WIDTH - 100 + (j * 100) - 300, 120 - 100))
+                    self.screen.blit(title_text, title_rect)
+
 
     def handle_event(self, event):
         if event.type == pygame.QUIT:
@@ -64,16 +69,18 @@ class GameScene:
         # Create the player
         player = Player(grid)
 
-        # solver = AStar(grid)
-        # solver = DFS(grid)
-        solver = Dijkstra(grid)
+        solvers = [
+            AStar(grid),
+            Dijkstra(grid),
+            DFS(grid)
+        ]
+        current_solver_index = 0
+        current_solver = solvers[current_solver_index]
 
         pprint(f"Empty path: {grid.path}")
 
-
         # Game loop
         while self.running:
-
             # Event handling
             for event in pygame.event.get():
                 self.handle_event(event)
@@ -87,23 +94,37 @@ class GameScene:
                     sys.exit()
 
             # Player has a goal
-            if solver.goal:
+            if current_solver.goal:
+
+                if player.position == grid.spawn and self.table_data[current_solver_index][2] != 0:
+                    self.table_data[current_solver_index][1] = 0
+                    self.table_data[current_solver_index][2] = 0
+
                 # Perform a step of the pathfinder algorithm
-                path, explored = solver.algorithm_tick()
+                path, explored = current_solver.algorithm_tick()
 
                 # If a path was found, store it
                 if path is not None:
                     grid.path = path
                     explored = explored - set(path)
                     player.acknoledge_path(path)
-                    self.lesser_path_counter = len(path)
+                    self.table_data[current_solver_index][2] = len(path)
                 else:
-                    self.steps_counter += 1
+                    self.table_data[current_solver_index][1] += 1
 
                 # Store the explored cells
                 grid.explored = explored
 
-            player.execute_action()                
+            player.execute_action()
+
+            # Check if the player has reached the goal
+            if player.position == grid.goal:
+                # Move to the next solver
+                current_solver_index = (current_solver_index + 1) % len(solvers)
+                current_solver = solvers[current_solver_index]
+                player.reset()
+                grid.reset()
+                current_solver.reset()
 
             # Fill the window with black
             self.screen.fill((0, 0, 0))
@@ -115,14 +136,11 @@ class GameScene:
             player.draw(self.screen)
 
             # Draw the counters
-            self.draw_solver_name(solver)
-            self.draw_steps_counter(self.steps_counter)
-            self.draw_lesser_path(self.lesser_path_counter)
+            self.draw_table(self.table_data)
 
             self.draw_back_button()
 
             # Update the display
             pygame.display.flip()
-
 
         return self.running
