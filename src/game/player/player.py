@@ -18,7 +18,7 @@ class Player:
     def __init__(self, grid):
         self.grid = grid
         self.path = []
-        self.position = (0, 0)
+        self.position = self.grid.spawn
         self.color = (0, 255, 0)
         self.size = (grid.CELL_SIZE, grid.CELL_SIZE)
         self.player_image = self.load_tile("mage.png")
