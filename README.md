@@ -22,7 +22,9 @@ Os algoritmos são:
 O jogo lê os dados do mapa a partir de arquivos png, sendo possível adicionar novos mapas.
 
 ## Screenshots
-Adicione 3 ou mais screenshots do projeto em funcionamento.
+![image](https://github.com/projeto-de-algoritmos/Grafos2_LootMaze/assets/40258400/91eea1d6-d9ba-4162-b91f-ec66a7660485)
+![image](https://github.com/projeto-de-algoritmos/Grafos2_LootMaze/assets/40258400/7122b52e-2bd4-49c7-992c-c9995f04bdbb)
+
 
 ## Instalação 
 **Linguagem**: Python<br>
