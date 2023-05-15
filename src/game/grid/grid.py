@@ -3,12 +3,22 @@ import random
 
 import pygame
 
-from src.config import MAP_ASSETS_DIR, SPRITES_DIR
+from src.config import (
+    MAP_ASSETS_DIR,
+    SPRITES_DIR,
+    CELL_SIZE,
+    GRID_X_OFFSET,
+    GRID_Y_OFFSET,
+    TILE_WIDTH,
+    TILE_HEIGHT,
+    CONVERSION_FACTOR_X,
+    CONVERSION_FACTOR_Y
+)
 
 
 class Grid:
 
-    CELL_SIZE = 8
+    CELL_SIZE = CELL_SIZE
 
     CELL_TYPE = {
         0: {
@@ -52,7 +62,7 @@ class Grid:
     # Map color to cell type
     COLOR_TO_CELL_TYPE = {v['color']: k for k, v in CELL_TYPE.items()}
 
-    GRID_POSITION = (CELL_SIZE  * 2, CELL_SIZE * 2)
+    GRID_POSITION = (CELL_SIZE * 2, CELL_SIZE * 2)
 
     spawn = ()
 
@@ -155,17 +165,23 @@ class Grid:
                     border_radius=0                    
                 )
 
-                # Set tile position
-                tile_position = (700 + x * 16 - y * 16, 200 + x * 8 + y * 8)
+                # Calculate tile position
+                tile_x = GRID_X_OFFSET + (
+                            x - y
+                ) * TILE_WIDTH * CONVERSION_FACTOR_Y
+                tile_y = GRID_Y_OFFSET + (
+                    x + y
+                ) * TILE_HEIGHT * CONVERSION_FACTOR_X
+                tile_position = (tile_x, tile_y)
+
 
                 # Scale tile image
                 self.tile_images[self.grid[y][x]] = pygame.transform.scale(
                     self.tile_images[self.grid[y][x]],
-                    (self.CELL_SIZE * 4, self.CELL_SIZE * 5)
+                    (self.CELL_SIZE * CONVERSION_FACTOR_Y * 6, self.CELL_SIZE * CONVERSION_FACTOR_X * 10)
                 )
 
                 screen.blit(
                     self.tile_images[self.grid[y][x]],
                     tile_position
                 )
-                

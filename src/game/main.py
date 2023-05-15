@@ -32,7 +32,6 @@ if __name__ == '__main__':
 
     # Limit the frame rate
     clock = pygame.time.Clock()
-    clock.tick(24)
 
     # Create the grid
     grid = Grid('map_2.png')
@@ -42,14 +41,16 @@ if __name__ == '__main__':
     # Create the player
     player = Player(grid)
 
-    # solver = AStar(grid)
+    solver = AStar(grid)
     # solver = Dijkstra(grid)
-    solver = DFS(grid)
+    # solver = DFS(grid)
 
     pprint(f'Empty path: {grid.path}')
 
     # Game loop
     while True:
+        clock.tick(30)
+
         # Event handling
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
