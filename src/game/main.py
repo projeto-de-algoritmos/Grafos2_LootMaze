@@ -11,6 +11,18 @@ from src.game.path_algorithm.dijkstra import Dijkstra
 from src.game.path_algorithm.DFS import DFS
 
 
+def handle_mouse_click():
+    global goal, grid
+    if pygame.mouse.get_pressed()[0]:
+        pos = pygame.mouse.get_pos()
+        goal = grid.pixel_to_cell(pos)
+        grid.path = []
+        grid.explored = []
+        grid.goal = goal
+        solver.goal = goal
+        print(f'Goal: {goal}')
+
+
 if __name__ == '__main__':
     # Initialize Pygame
     pygame.init()
@@ -23,19 +35,16 @@ if __name__ == '__main__':
     clock.tick(24)
 
     # Create the grid
-    grid = Grid('map.png')
+    grid = Grid('map_2.png')
     from pprint import pprint
     # pprint(grid.grid)
-
 
     # Create the player
     player = Player(grid)
 
-
-    goal = None
-    #solver = AStar(grid, player, goal)
-    solver = Dijkstra(grid, player, goal)
-    #solver = DFS(grid, player, goal)
+    # solver = AStar(grid)
+    # solver = Dijkstra(grid)
+    solver = DFS(grid)
 
     pprint(f'Empty path: {grid.path}')
 
@@ -48,16 +57,9 @@ if __name__ == '__main__':
                 sys.exit()
 
         # Player has no goal
-        if not solver.goal:
-            # Player clicks on goal pixel
-            if pygame.mouse.get_pressed()[0]:
-                pos = pygame.mouse.get_pos()
-                goal = grid.pixel_to_cell(pos)
-                grid.path = []
-                grid.explored = []
-                grid.goal = goal
-                solver.goal = goal
-                print(f'Goal: {goal}')
+        # if not solver.goal and not grid.path:
+        # Player clicks on goal pixel
+        # handle_mouse_click()
         
         # Player has a goal
         if solver.goal:
@@ -68,10 +70,12 @@ if __name__ == '__main__':
             if path is not None:
                 grid.path = path
                 explored = explored - set(path)
-                player.move_along_path(path)
+                player.acknoledge_path(path)
 
             # Store the explored cells
             grid.explored = explored
+
+        player.execute_action()
 
         # Fill the window with black
         window.fill((0, 0, 0))

@@ -31,7 +31,21 @@ class Grid:
             'walkable': True,
             'cost': 10,
             'image_filename': 'lava_tile.png'
-        }
+        },
+        3: {
+            'name': 'spawn',
+            'color': (0, 255, 0, 255),
+            'walkable': True,
+            'cost': 1,
+            'image_filename': 'lava_tile.png'
+        },
+        4: {
+            'name': 'goal',
+            'color': (0, 0, 255, 255),
+            'walkable': True,
+            'cost': 1,
+            'image_filename': 'lava_tile.png'
+        },
 
     }
 
@@ -39,6 +53,8 @@ class Grid:
     COLOR_TO_CELL_TYPE = {v['color']: k for k, v in CELL_TYPE.items()}
 
     GRID_POSITION = (CELL_SIZE  * 2, CELL_SIZE * 2)
+
+    spawn = ()
 
     path = []
 
@@ -64,8 +80,6 @@ class Grid:
         tile_image.set_colorkey((0, 0, 0))
         return tile_image
 
-        self.goal = (None, None)
-
     def pixel_to_cell(self, pixel):
         return (
             (pixel[0] - self.GRID_POSITION[0]) // self.CELL_SIZE,
@@ -73,17 +87,39 @@ class Grid:
         )
         
     def pixel_to_cell_type(self, color):
-        print(color)
         return self.COLOR_TO_CELL_TYPE.get(tuple(color), 0)  # Convert color to tuple
 
     def load_from_file(self, filename):
         image = pygame.image.load(os.path.join(MAP_ASSETS_DIR, filename))
-        print(self.COLOR_TO_CELL_TYPE)
-        return [
-            [
-                self.pixel_to_cell_type(image.get_at((x, y))) for x in range(image.get_width())
-            ] for y in range(image.get_height())
-        ]
+        maze_array = []
+
+        for y in range(image.get_height()):
+            row = []
+            for x in range(image.get_width()):
+                pixel_color = image.get_at((x, y))
+                r, g, b, a = pixel_color
+
+                if (r, g, b) == (0, 255, 0):  # green pixel for spawn
+                    self.spawn = (x, y)
+                    row.append(self.pixel_to_cell_type(pixel_color))
+                elif (r, g, b) == (0, 0, 255):  # red pixel for goal
+                    self.goal = (x, y)
+                    row.append(self.pixel_to_cell_type(pixel_color))
+                else:
+                    row.append(self.pixel_to_cell_type(pixel_color))
+
+            maze_array.append(row)
+
+        # Make sure both spawn and goal were found
+        if self.spawn is None:
+            raise ValueError("Spawn point not found in image.")
+        if self.goal is None:
+            raise ValueError("Goal point not found in image.")
+
+        print(f"Spawn point: {self.spawn} ")
+        print(f"Goal point: {self.goal} ")
+
+        return maze_array
 
     def create_walls(self):
         # create random walls assigning 1 to random cells on the grid
@@ -103,11 +139,11 @@ class Grid:
                 )
 
                 if (x, y) in self.path:
-                    cell_color = (255, 128, 128) # Pink
+                    cell_color = (255, 128, 128, 255)  # Pink
                 elif (x, y) in self.explored:
-                    cell_color = (0, 0, 255) # Blue
+                    cell_color = (0, 0, 255, 255)  # Blue
                 elif (x, y) == self.goal:
-                    cell_color = (255, 128, 0) # Orange
+                    cell_color = (255, 128, 0, 255)  # Orange
                 else:
                     cell_color = self.CELL_TYPE[self.grid[y][x]]['color']
 

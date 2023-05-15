@@ -1,11 +1,11 @@
 class DFS:
-    def __init__(self, grid, start, goal):
+    def __init__(self, grid):
         self.grid = grid
-        self.start = start
-        self.goal = goal
+        self.start = self.grid.spawn
+        self.goal = self.grid.goal
 
-        self.stack = [start]  # Use a stack instead of a set for DFS
-        self.came_from = {start: None}
+        self.stack = [self.start]  # Use a stack instead of a set for DFS
+        self.came_from = {self.start: None}
         self.explored = set()
 
     def get_neighbors(self, cell):
