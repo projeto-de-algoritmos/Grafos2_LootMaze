@@ -1,4 +1,4 @@
-from src.config import WINDOW_WIDTH, WINDOW_HEIGHT
+import os
 import pygame
 import sys
 import random
@@ -9,6 +9,8 @@ from src.game.player.player import Player
 from src.game.path_algorithm.a_star import AStar
 from src.game.path_algorithm.dijkstra import Dijkstra
 from src.game.path_algorithm.DFS import DFS
+from src.config import WINDOW_WIDTH, WINDOW_HEIGHT, SPRITES_DIR
+
 
 class GameScene:
     def __init__(self, screen):
@@ -16,22 +18,18 @@ class GameScene:
         self.running = True
         self.back_button = pygame.Rect(0, WINDOW_HEIGHT - 100, 200, 80) 
         self.font = pygame.font.Font(None, 36)
-
-
         self.steps_counter_text = "passos: "
         self.lesser_path = "menor caminho: "
-
         # table -> [solver_name, steps, lesser_path]
         self.table_data = [
             ["A*", 0, 0],
             ["Dijkstra", 0, 0],
             ["DFS", 0, 0]
         ]
+        self.button_tile = pygame.transform.scale(
+            self.load_tile("button.png"), (200, 80)
+        )
 
-    def draw_back_button(self):
-        pygame.draw.rect(self.screen, (255, 0, 0), self.back_button)
-        # You should replace this with your actual drawing code, especially if you want a more styled button
-    
     def draw_table(self, table_data):
         # Títulos das colunas
         column_titles = ["", "Steps", "Path"]
@@ -50,6 +48,21 @@ class GameScene:
                     title_rect = title_text.get_rect(center=(WINDOW_WIDTH - 100 + (j * 100) - 300, 120 - 100))
                     self.screen.blit(title_text, title_rect)
 
+    @staticmethod
+    def load_tile(image_file):
+        tile_image = pygame.image.load(os.path.join(SPRITES_DIR, image_file)).convert()
+        tile_image.set_colorkey((0, 0, 0))
+        return tile_image
+
+    def draw_back_button(self):
+        pygame.draw.rect(self.screen, (255, 0, 0), self.back_button)
+        self.screen.blit(self.button_tile, (0, WINDOW_HEIGHT - 100))
+        # Write back text
+        font = pygame.font.Font("freesansbold.ttf", 32)
+        text = font.render("Back", True, (255, 255, 255))
+        textRect = text.get_rect()
+        textRect.center = (100, WINDOW_HEIGHT - 60)
+        self.screen.blit(text, textRect)
 
     def handle_event(self, event):
         if event.type == pygame.QUIT:
@@ -58,13 +71,22 @@ class GameScene:
             if self.back_button.collidepoint(event.pos):
                 self.running = False
 
+    def vertical_gradient(self, screen, top_color, bottom_color):
+        for y in range(screen.get_height()):
+            ratio = y / screen.get_height()
+            color = (
+                top_color[0] * (1 - ratio) + bottom_color[0] * ratio,
+                top_color[1] * (1 - ratio) + bottom_color[1] * ratio,
+                top_color[2] * (1 - ratio) + bottom_color[2] * ratio
+            )
+            pygame.draw.line(screen, color, (0, y), (screen.get_width(), y))
+
     def run(self):
         # Limit the frame rate
         clock = pygame.time.Clock()
 
         # Create the grid
-        grid = Grid("map_3.png")
-        from pprint import pprint
+        grid = Grid("map_2.png")
 
         # Create the player
         player = Player(grid)
@@ -76,8 +98,6 @@ class GameScene:
         ]
         current_solver_index = 0
         current_solver = solvers[current_solver_index]
-
-        pprint(f"Empty path: {grid.path}")
 
         # Game loop
         while self.running:
@@ -127,7 +147,7 @@ class GameScene:
                 current_solver.reset()
 
             # Fill the window with black
-            self.screen.fill((0, 0, 0))
+            self.vertical_gradient(self.screen, (50, 0, 50), (20, 0, 20))
 
             # Draw the grid
             grid.draw_grid(self.screen)

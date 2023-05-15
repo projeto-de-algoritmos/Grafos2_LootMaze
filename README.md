@@ -6,25 +6,48 @@
 ## Alunos
 |Matrícula | Aluno |
 | -- | -- |
-| xx/xxxxxx  |  xxxx xxxx xxxxx |
-| xx/xxxxxx  |  xxxx xxxx xxxxx |
+| 18/0016563  |  Filipe Santana Machado |
+| 18/0014412  |  Cainã Valença de Freitas |
 
 ## Sobre 
-Descreva os objetivos do seu projeto e como ele funciona. 
+Um jogo onde um mago encontra o menor caminho entre seu spawn e o objetivo usando multiplos algoritmos...
+
+Três algoritmos são executados em cada fase do jogo, gerando estatísticas de execução.
+Os algoritmos são:
+
+  - A*
+  - Dijkstra
+  - DFS
+
+O jogo lê os dados do mapa a partir de arquivos png, sendo possível adicionar novos mapas.
 
 ## Screenshots
 Adicione 3 ou mais screenshots do projeto em funcionamento.
 
 ## Instalação 
-**Linguagem**: xxxxxx<br>
-**Framework**: (caso exista)<br>
-Descreva os pré-requisitos para rodar o seu projeto e os comandos necessários.
+**Linguagem**: Python<br>
+**Framework**: Pygame<br>
+
+Para instalar as dependências basta instalar o pygame em seu ambiente python...
+
+```shell
+make install
+```
+
+ou
+
+```shell
+pip install -r requirements.txt
+```
 
 ## Uso 
-Explique como usar seu projeto caso haja algum passo a passo após o comando de execução.
 
-## Outros 
-Quaisquer outras informações sobre seu projeto podem ser descritas abaixo.
+Uma vez que esteja em seu ambiente python com as dependências instaladas basta executar o projeto:
+
+```
+make run
+```
+
 
 
 
