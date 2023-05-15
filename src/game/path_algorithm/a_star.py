@@ -18,8 +18,11 @@ class AStar:
         neighbors = []
         for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
             nx, ny = cell[0] + dx, cell[1] + dy
-            if (0 <= nx < self.grid.width and 0 <= ny < self.grid.height and
-                    self.grid.CELL_TYPE[self.grid.grid[ny][nx]]['walkable']):
+            if (
+                0 <= nx < self.grid.width
+                and 0 <= ny < self.grid.height
+                and self.grid.CELL_TYPE[self.grid.grid[ny][nx]]["walkable"]
+            ):
                 neighbors.append((nx, ny))
         return neighbors
 
@@ -41,13 +44,20 @@ class AStar:
         self.open_set.remove(current)
 
         for neighbor in self.get_neighbors(current):
-            tentative_g_score = self.g_score[current] + self.grid.CELL_TYPE[self.grid.grid[neighbor[1]][neighbor[0]]]['cost']
-            if neighbor not in self.g_score or tentative_g_score < self.g_score[neighbor]:
+            tentative_g_score = (
+                self.g_score[current]
+                + self.grid.CELL_TYPE[self.grid.grid[neighbor[1]][neighbor[0]]]["cost"]
+            )
+            if (
+                neighbor not in self.g_score
+                or tentative_g_score < self.g_score[neighbor]
+            ):
                 self.came_from[neighbor] = current
                 self.g_score[neighbor] = tentative_g_score
-                self.f_score[neighbor] = tentative_g_score + self.heuristic(neighbor, self.goal)
+                self.f_score[neighbor] = tentative_g_score + self.heuristic(
+                    neighbor, self.goal
+                )
                 if neighbor not in self.open_set:
                     self.open_set.add(neighbor)
 
         return None, self.explored  # Path not yet found
-

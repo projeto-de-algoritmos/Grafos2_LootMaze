@@ -20,10 +20,10 @@ def handle_mouse_click():
         grid.explored = []
         grid.goal = goal
         solver.goal = goal
-        print(f'Goal: {goal}')
+        print(f"Goal: {goal}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # Initialize Pygame
     pygame.init()
 
@@ -34,8 +34,9 @@ if __name__ == '__main__':
     clock = pygame.time.Clock()
 
     # Create the grid
-    grid = Grid('map_2.png')
+    grid = Grid("map_2.png")
     from pprint import pprint
+
     # pprint(grid.grid)
 
     # Create the player
@@ -45,7 +46,7 @@ if __name__ == '__main__':
     # solver = Dijkstra(grid)
     # solver = DFS(grid)
 
-    pprint(f'Empty path: {grid.path}')
+    pprint(f"Empty path: {grid.path}")
 
     # Game loop
     while True:
@@ -61,7 +62,7 @@ if __name__ == '__main__':
         # if not solver.goal and not grid.path:
         # Player clicks on goal pixel
         # handle_mouse_click()
-        
+
         # Player has a goal
         if solver.goal:
             # Perform a step of the pathfinder algorithm

@@ -12,55 +12,53 @@ from src.config import (
     TILE_WIDTH,
     TILE_HEIGHT,
     CONVERSION_FACTOR_X,
-    CONVERSION_FACTOR_Y
+    CONVERSION_FACTOR_Y,
 )
 
 
 class Grid:
-
     CELL_SIZE = CELL_SIZE
 
     CELL_TYPE = {
         0: {
-            'name': 'floor',
-            'color': (255, 255, 255, 255),
-            'walkable': True,
-            'cost': 1,
-            'image_filename': 'ground_tile.png'
+            "name": "floor",
+            "color": (255, 255, 255, 255),
+            "walkable": True,
+            "cost": 1,
+            "image_filename": "ground_tile.png",
         },
         1: {
-            'name': 'wall',
-            'color': (0, 0, 0, 255),
-            'walkable': False,
-            'cost': 0,
-            'image_filename': 'wall_tile.png'
+            "name": "wall",
+            "color": (0, 0, 0, 255),
+            "walkable": False,
+            "cost": 0,
+            "image_filename": "wall_tile.png",
         },
         2: {
-            'name': 'lava',
-            'color': (255, 255, 0, 255),
-            'walkable': True,
-            'cost': 10,
-            'image_filename': 'lava_tile.png'
+            "name": "lava",
+            "color": (255, 255, 0, 255),
+            "walkable": True,
+            "cost": 10,
+            "image_filename": "lava_tile.png",
         },
         3: {
-            'name': 'spawn',
-            'color': (0, 255, 0, 255),
-            'walkable': True,
-            'cost': 1,
-            'image_filename': 'lava_tile.png'
+            "name": "spawn",
+            "color": (0, 255, 0, 255),
+            "walkable": True,
+            "cost": 1,
+            "image_filename": "lava_tile.png",
         },
         4: {
-            'name': 'goal',
-            'color': (0, 0, 255, 255),
-            'walkable': True,
-            'cost': 1,
-            'image_filename': 'lava_tile.png'
+            "name": "goal",
+            "color": (0, 0, 255, 255),
+            "walkable": True,
+            "cost": 1,
+            "image_filename": "lava_tile.png",
         },
-
     }
 
     # Map color to cell type
-    COLOR_TO_CELL_TYPE = {v['color']: k for k, v in CELL_TYPE.items()}
+    COLOR_TO_CELL_TYPE = {v["color"]: k for k, v in CELL_TYPE.items()}
 
     GRID_POSITION = (CELL_SIZE * 2, CELL_SIZE * 2)
 
@@ -76,12 +74,11 @@ class Grid:
         self.grid = self.load_from_file(filename)
         self.width = len(self.grid[0])
         self.height = len(self.grid)
-        
+
         # load tile images
         self.tile_images = {
-            cell_type: self.load_tile(
-                self.CELL_TYPE[cell_type]['image_filename']
-            ) for cell_type in self.CELL_TYPE.keys()
+            cell_type: self.load_tile(self.CELL_TYPE[cell_type]["image_filename"])
+            for cell_type in self.CELL_TYPE.keys()
         }
 
     @staticmethod
@@ -93,9 +90,9 @@ class Grid:
     def pixel_to_cell(self, pixel):
         return (
             (pixel[0] - self.GRID_POSITION[0]) // self.CELL_SIZE,
-            (pixel[1] - self.GRID_POSITION[1]) // self.CELL_SIZE
+            (pixel[1] - self.GRID_POSITION[1]) // self.CELL_SIZE,
         )
-        
+
     def pixel_to_cell_type(self, color):
         return self.COLOR_TO_CELL_TYPE.get(tuple(color), 0)  # Convert color to tuple
 
@@ -145,7 +142,7 @@ class Grid:
                     self.GRID_POSITION[0] + (x * self.CELL_SIZE),
                     self.GRID_POSITION[1] + (y * self.CELL_SIZE),
                     self.CELL_SIZE,
-                    self.CELL_SIZE
+                    self.CELL_SIZE,
                 )
 
                 if (x, y) in self.path:
@@ -155,33 +152,28 @@ class Grid:
                 elif (x, y) == self.goal:
                     cell_color = (255, 128, 0, 255)  # Orange
                 else:
-                    cell_color = self.CELL_TYPE[self.grid[y][x]]['color']
+                    cell_color = self.CELL_TYPE[self.grid[y][x]]["color"]
 
                 pygame.draw.rect(
                     surface=screen,
                     color=cell_color,
                     rect=rect,
                     width=0,
-                    border_radius=0                    
+                    border_radius=0,
                 )
 
                 # Calculate tile position
-                tile_x = GRID_X_OFFSET + (
-                            x - y
-                ) * TILE_WIDTH * CONVERSION_FACTOR_Y
-                tile_y = GRID_Y_OFFSET + (
-                    x + y
-                ) * TILE_HEIGHT * CONVERSION_FACTOR_X
+                tile_x = GRID_X_OFFSET + (x - y) * TILE_WIDTH * CONVERSION_FACTOR_Y
+                tile_y = GRID_Y_OFFSET + (x + y) * TILE_HEIGHT * CONVERSION_FACTOR_X
                 tile_position = (tile_x, tile_y)
-
 
                 # Scale tile image
                 self.tile_images[self.grid[y][x]] = pygame.transform.scale(
                     self.tile_images[self.grid[y][x]],
-                    (self.CELL_SIZE * CONVERSION_FACTOR_Y * 6, self.CELL_SIZE * CONVERSION_FACTOR_X * 10)
+                    (
+                        self.CELL_SIZE * CONVERSION_FACTOR_Y * 6,
+                        self.CELL_SIZE * CONVERSION_FACTOR_X * 10,
+                    ),
                 )
 
-                screen.blit(
-                    self.tile_images[self.grid[y][x]],
-                    tile_position
-                )
+                screen.blit(self.tile_images[self.grid[y][x]], tile_position)
