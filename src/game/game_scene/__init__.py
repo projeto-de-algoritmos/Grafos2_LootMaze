@@ -36,7 +36,6 @@ class GameScene:
         textRect = text.get_rect()
         textRect.center = (100, WINDOW_HEIGHT - 60)
         self.screen.blit(text, textRect)
-        
 
     def handle_event(self, event):
         if event.type == pygame.QUIT:
@@ -45,13 +44,22 @@ class GameScene:
             if self.back_button.collidepoint(event.pos):
                 self.running = False
 
+    def vertical_gradient(self, screen, top_color, bottom_color):
+        for y in range(screen.get_height()):
+            ratio = y / screen.get_height()
+            color = (
+                top_color[0] * (1 - ratio) + bottom_color[0] * ratio,
+                top_color[1] * (1 - ratio) + bottom_color[1] * ratio,
+                top_color[2] * (1 - ratio) + bottom_color[2] * ratio
+            )
+            pygame.draw.line(screen, color, (0, y), (screen.get_width(), y))
+
     def run(self):
         # Limit the frame rate
         clock = pygame.time.Clock()
 
         # Create the grid
         grid = Grid("map_2.png")
-        from pprint import pprint
 
         # Create the player
         player = Player(grid)
@@ -59,9 +67,6 @@ class GameScene:
         #solver = AStar(grid)
         solver = Dijkstra(grid)
         #solver = DFS(grid)
-
-        pprint(f"Empty path: {grid.path}")
-
 
         # Game loop
         while self.running:
@@ -94,7 +99,7 @@ class GameScene:
             player.execute_action()
 
             # Fill the window with black
-            self.screen.fill((0, 0, 0))
+            self.vertical_gradient(self.screen, (50, 0, 50), (20, 0, 20))
 
             # Draw the grid
             grid.draw_grid(self.screen)
@@ -106,6 +111,5 @@ class GameScene:
 
             # Update the display
             pygame.display.flip()
-
 
         return self.running

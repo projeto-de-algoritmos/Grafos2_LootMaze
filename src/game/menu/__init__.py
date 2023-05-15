@@ -15,6 +15,9 @@ class Menu:
         self.button_tile = pygame.transform.scale(
             self.load_tile("button.png"), (200, 80)
         )
+        self.game_title = pygame.transform.scale(
+            self.load_tile("title.png"), (128 * 5, 32 * 5)
+        )
 
     @staticmethod
     def load_tile(image_file):
@@ -53,19 +56,35 @@ class Menu:
         textRect.center = (100, 140)
         self.screen.blit(text, textRect)
 
+    def vertical_gradient(self, screen, top_color, bottom_color):
+        for y in range(screen.get_height()):
+            ratio = y / screen.get_height()
+            color = (
+                top_color[0] * (1 - ratio) + bottom_color[0] * ratio,
+                top_color[1] * (1 - ratio) + bottom_color[1] * ratio,
+                top_color[2] * (1 - ratio) + bottom_color[2] * ratio
+            )
+            pygame.draw.line(screen, color, (0, y), (screen.get_width(), y))
+
     def run(self):
         while self.running:
             for event in pygame.event.get():
                 self.handle_event(event)
 
             # Draw everything for the menu
-            self.screen.fill((0,0,0))
+            # self.screen.fill((0,0,0))
+            self.vertical_gradient(self.screen, (100, 0, 50), (20, 0, 20))
             
             # Draw start button
             self.draw_start_button()
 
             # Draw quit button
             self.draw_quit_button()
+
+            # Draw game title image
+            self.screen.blit(self.game_title, ((WINDOW_WIDTH / 2) - (128 * 2), (WINDOW_HEIGHT / 2) - (32 * 8)))
+
+
             
             pygame.display.flip()
         
