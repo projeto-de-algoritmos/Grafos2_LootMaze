@@ -1,12 +1,12 @@
 class Dijkstra:
-    def __init__(self, grid, start, goal):
+    def __init__(self, grid):
         self.grid = grid
-        self.start = start
-        self.goal = goal
+        self.spawn = self.grid.spawn
+        self.goal = self.grid.goal
 
-        self.open_set = {start}
-        self.came_from = {start: None}
-        self.g_score = {start: 0}
+        self.open_set = {self.spawn}
+        self.came_from = {self.spawn: None}
+        self.g_score = {self.spawn: 0}
         self.explored = set()
 
     def get_neighbors(self, cell):
@@ -28,7 +28,7 @@ class Dijkstra:
 
         if current == self.goal:
             path = []
-            while current is not None and current != self.start:
+            while current is not None and current != self.spawn:
                 path.append(current)
                 current = self.came_from[current]
             path.reverse()
