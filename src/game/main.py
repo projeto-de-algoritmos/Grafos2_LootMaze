@@ -43,8 +43,8 @@ if __name__ == '__main__':
     player = Player(grid)
 
     # solver = AStar(grid)
-    solver = Dijkstra(grid)
-    # solver = DFS(grid, player, goal)
+    # solver = Dijkstra(grid)
+    solver = DFS(grid)
 
     pprint(f'Empty path: {grid.path}')
 
