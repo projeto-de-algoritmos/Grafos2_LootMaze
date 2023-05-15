@@ -1,9 +1,16 @@
 class Dijkstra:
     def __init__(self, grid):
+        self.name = "Dijkstra"
         self.grid = grid
         self.spawn = self.grid.spawn
         self.goal = self.grid.goal
 
+        self.open_set = {self.spawn}
+        self.came_from = {self.spawn: None}
+        self.g_score = {self.spawn: 0}
+        self.explored = set()
+    
+    def reset(self):
         self.open_set = {self.spawn}
         self.came_from = {self.spawn: None}
         self.g_score = {self.spawn: 0}

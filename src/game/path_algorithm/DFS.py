@@ -1,10 +1,16 @@
 class DFS:
     def __init__(self, grid):
+        self.name = "DFS"
         self.grid = grid
         self.start = self.grid.spawn
         self.goal = self.grid.goal
 
         self.stack = [self.start]  # Use a stack instead of a set for DFS
+        self.came_from = {self.start: None}
+        self.explored = set()
+
+    def reset(self):
+        self.stack = [self.start]
         self.came_from = {self.start: None}
         self.explored = set()
 

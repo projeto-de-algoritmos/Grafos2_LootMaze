@@ -95,6 +95,10 @@ class Grid:
 
     def pixel_to_cell_type(self, color):
         return self.COLOR_TO_CELL_TYPE.get(tuple(color), 0)  # Convert color to tuple
+    
+    def reset(self):
+        self.path = []
+        self.explored = []
 
     def load_from_file(self, filename):
         image = pygame.image.load(os.path.join(MAP_ASSETS_DIR, filename))

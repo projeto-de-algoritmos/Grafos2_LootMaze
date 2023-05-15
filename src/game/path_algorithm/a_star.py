@@ -1,5 +1,6 @@
 class AStar:
     def __init__(self, grid):
+        self.name = "A*"  # Name of the algorithm
         self.grid = grid
         self.spawn = self.grid.spawn
         self.goal = self.grid.goal
@@ -7,6 +8,13 @@ class AStar:
         self.came_from = {grid.spawn: None}
         self.g_score = {grid.spawn: 0}
         self.f_score = {grid.spawn: self.heuristic(grid.spawn, grid.goal)}
+        self.explored = set()
+    
+    def reset(self):
+        self.open_set = {self.spawn}
+        self.came_from = {self.spawn: None}
+        self.g_score = {self.spawn: 0}
+        self.f_score = {self.spawn: self.heuristic(self.spawn, self.goal)}
         self.explored = set()
 
     def heuristic(self, cell, goal):
