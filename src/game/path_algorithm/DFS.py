@@ -13,8 +13,11 @@ class DFS:
         neighbors = []
         for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
             nx, ny = cell[0] + dx, cell[1] + dy
-            if (0 <= nx < self.grid.width and 0 <= ny < self.grid.height and
-                    self.grid.CELL_TYPE[self.grid.grid[ny][nx]]['walkable']):
+            if (
+                0 <= nx < self.grid.width
+                and 0 <= ny < self.grid.height
+                and self.grid.CELL_TYPE[self.grid.grid[ny][nx]]["walkable"]
+            ):
                 neighbors.append((nx, ny))
         return neighbors
 

@@ -14,8 +14,11 @@ class Dijkstra:
         neighbors = []
         for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
             nx, ny = cell[0] + dx, cell[1] + dy
-            if (0 <= nx < self.grid.width and 0 <= ny < self.grid.height and
-                    self.grid.CELL_TYPE[self.grid.grid[ny][nx]]['walkable']):
+            if (
+                0 <= nx < self.grid.width
+                and 0 <= ny < self.grid.height
+                and self.grid.CELL_TYPE[self.grid.grid[ny][nx]]["walkable"]
+            ):
                 neighbors.append((nx, ny))
         return neighbors
 
@@ -23,7 +26,9 @@ class Dijkstra:
         if not self.open_set:
             return None, self.explored  # No path found
 
-        current = min(self.open_set, key=lambda cell: self.g_score[cell])  # Here we only consider g_score
+        current = min(
+            self.open_set, key=lambda cell: self.g_score[cell]
+        )  # Here we only consider g_score
         self.explored.add(current)  # add current cell to explored set
 
         if current == self.goal:
@@ -37,8 +42,14 @@ class Dijkstra:
         self.open_set.remove(current)
 
         for neighbor in self.get_neighbors(current):
-            tentative_g_score = self.g_score[current] + self.grid.CELL_TYPE[self.grid.grid[neighbor[1]][neighbor[0]]]['cost']
-            if neighbor not in self.g_score or tentative_g_score < self.g_score[neighbor]:
+            tentative_g_score = (
+                self.g_score[current]
+                + self.grid.CELL_TYPE[self.grid.grid[neighbor[1]][neighbor[0]]]["cost"]
+            )
+            if (
+                neighbor not in self.g_score
+                or tentative_g_score < self.g_score[neighbor]
+            ):
                 self.came_from[neighbor] = current
                 self.g_score[neighbor] = tentative_g_score
                 if neighbor not in self.open_set:
