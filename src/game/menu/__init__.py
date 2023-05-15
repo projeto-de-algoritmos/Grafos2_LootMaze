@@ -33,6 +33,26 @@ class Menu:
                 self.running = False
                 self.game_scene = True
 
+    def draw_quit_button(self):
+        pygame.draw.rect(self.screen, (255, 0, 0), self.quit_button)
+        self.screen.blit(self.button_tile, (0, 200))
+        # Write quit text
+        font = pygame.font.Font('freesansbold.ttf', 32)
+        text = font.render('Quit', True, (255, 255, 255))
+        textRect = text.get_rect()
+        textRect.center = (100, 240)
+        self.screen.blit(text, textRect)
+
+    def draw_start_button(self):
+        pygame.draw.rect(self.screen, (255, 0, 0), self.start_button)
+        self.screen.blit(self.button_tile, (0, 100))
+        # Write start text
+        font = pygame.font.Font('freesansbold.ttf', 32)
+        text = font.render('Start', True, (255, 255, 255))
+        textRect = text.get_rect()
+        textRect.center = (100, 140)
+        self.screen.blit(text, textRect)
+
     def run(self):
         while self.running:
             for event in pygame.event.get():
@@ -42,24 +62,10 @@ class Menu:
             self.screen.fill((0,0,0))
             
             # Draw start button
-            pygame.draw.rect(self.screen, (255, 0, 0), self.start_button)
-            self.screen.blit(self.button_tile, (0, 100))
-            # Write start text
-            font = pygame.font.Font('freesansbold.ttf', 32)
-            text = font.render('Start', True, (255, 255, 255))
-            textRect = text.get_rect()
-            textRect.center = (100, 140)
-            self.screen.blit(text, textRect)
+            self.draw_start_button()
 
             # Draw quit button
-            pygame.draw.rect(self.screen, (255, 0, 0), self.quit_button)
-            self.screen.blit(self.button_tile, (0, 200))
-            # Write quit text
-            font = pygame.font.Font('freesansbold.ttf', 32)
-            text = font.render('Quit', True, (255, 255, 255))
-            textRect = text.get_rect()
-            textRect.center = (100, 240)
-            self.screen.blit(text, textRect)
+            self.draw_quit_button()
             
             pygame.display.flip()
         

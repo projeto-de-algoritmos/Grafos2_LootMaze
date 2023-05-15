@@ -30,6 +30,13 @@ class GameScene:
     def draw_back_button(self):
         pygame.draw.rect(self.screen, (255, 0, 0), self.back_button)
         self.screen.blit(self.button_tile, (0, WINDOW_HEIGHT - 100))
+        # Write back text
+        font = pygame.font.Font("freesansbold.ttf", 32)
+        text = font.render("Back", True, (255, 255, 255))
+        textRect = text.get_rect()
+        textRect.center = (100, WINDOW_HEIGHT - 60)
+        self.screen.blit(text, textRect)
+        
 
     def handle_event(self, event):
         if event.type == pygame.QUIT:
