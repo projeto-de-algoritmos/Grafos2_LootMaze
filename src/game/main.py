@@ -34,7 +34,7 @@ if __name__ == "__main__":
     clock = pygame.time.Clock()
 
     # Create the grid
-    grid = Grid("map_2.png")
+    grid = Grid("map_3.png")
     from pprint import pprint
 
     # pprint(grid.grid)
@@ -50,7 +50,9 @@ if __name__ == "__main__":
 
     # Game loop
     while True:
-        clock.tick(30)
+        
+        clock.tick(360/((len(grid.path)/2) + 1))
+        
 
         # Event handling
         for event in pygame.event.get():
