@@ -1,4 +1,4 @@
-from src.config import WINDOW_WIDTH, WINDOW_HEIGHT
+import os
 import pygame
 import sys
 import random
@@ -9,16 +9,27 @@ from src.game.player.player import Player
 from src.game.path_algorithm.a_star import AStar
 from src.game.path_algorithm.dijkstra import Dijkstra
 from src.game.path_algorithm.DFS import DFS
+from src.config import WINDOW_WIDTH, WINDOW_HEIGHT, SPRITES_DIR
+
 
 class GameScene:
     def __init__(self, screen):
         self.screen = screen
         self.running = True
         self.back_button = pygame.Rect(0, WINDOW_HEIGHT - 100, 200, 80) 
+        self.button_tile = pygame.transform.scale(
+            self.load_tile("button.png"), (200, 80)
+        )
+
+    @staticmethod
+    def load_tile(image_file):
+        tile_image = pygame.image.load(os.path.join(SPRITES_DIR, image_file)).convert()
+        tile_image.set_colorkey((0, 0, 0))
+        return tile_image
 
     def draw_back_button(self):
         pygame.draw.rect(self.screen, (255, 0, 0), self.back_button)
-        # You should replace this with your actual drawing code, especially if you want a more styled button
+        self.screen.blit(self.button_tile, (0, WINDOW_HEIGHT - 100))
 
     def handle_event(self, event):
         if event.type == pygame.QUIT:
@@ -32,15 +43,15 @@ class GameScene:
         clock = pygame.time.Clock()
 
         # Create the grid
-        grid = Grid("map_3.png")
+        grid = Grid("map_2.png")
         from pprint import pprint
 
         # Create the player
         player = Player(grid)
 
-        solver = AStar(grid)
-        # solver = Dijkstra(grid)
-        # solver = DFS(grid)
+        #solver = AStar(grid)
+        solver = Dijkstra(grid)
+        #solver = DFS(grid)
 
         pprint(f"Empty path: {grid.path}")
 
