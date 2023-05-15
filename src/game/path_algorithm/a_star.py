@@ -1,13 +1,12 @@
 class AStar:
-    def __init__(self, grid, start, goal):
+    def __init__(self, grid):
         self.grid = grid
-        self.start = start
-        self.goal = goal
-
-        self.open_set = {start}
-        self.came_from = {start: None}
-        self.g_score = {start: 0}
-        self.f_score = {start: self.heuristic(start, goal)}
+        self.spawn = self.grid.spawn
+        self.goal = self.grid.goal
+        self.open_set = {grid.spawn}
+        self.came_from = {grid.spawn: None}
+        self.g_score = {grid.spawn: 0}
+        self.f_score = {grid.spawn: self.heuristic(grid.spawn, grid.goal)}
         self.explored = set()
 
     def heuristic(self, cell, goal):
@@ -33,7 +32,7 @@ class AStar:
 
         if current == self.goal:
             path = []
-            while current is not None and current != self.start:
+            while current is not None and current != self.spawn:
                 path.append(current)
                 current = self.came_from[current]
             path.reverse()
